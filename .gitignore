@@ -1,0 +1,12 @@
+
+# .gitignore
+venv/
+__pycache__/
+*.pyc
+*.pyd
+*.dll
+*.lib
+*.exe
+*.so
+.DS_Store
+*.log
