@@ -1,19 +1,20 @@
-from ocr.extract_text import extract_text  #ocr folder -> extract_text file -> extract_text function
+from ocr.extract_text import extract_text
 from chunking.chunk_text import chunk_text
 from embedding.embed_chunks import get_embedding_model, embed_chunks
 from retriever.faiss_retriever import FaissRetriever
-import json
+from rag.rag_chain import RAGChain
 import numpy as np
+import os
+import json
 
-if __name__ == "__main__":   
-    
+if __name__ == "__main__":
     r''' COMMENTED THIS BLOCK SINCE RAN IT ONCE AND SAVED THE EMBEDDINGS TO JSON
-    pdf_path = r"C:\Users\Somya Shekhar\Desktop\chatbot-rag\data\compendium_of_govt._of_india_schemes_programmes.pdf"  # Example: Pradhan Mantri Kaushal Vikas Yojana
+    pdf_path = r"C:\Users\Somya Shekhar\Desktop\chatbot-rag\data\compendium_of_govt._of_india_schemes_programmes.pdf"
     text = extract_text(pdf_path)
     
     print("\n📄 Extracted Text Preview:")
     print("-" * 50)
-    print(text[:1500])  # Preview first 1500 chars
+    print(text[:1500])
 
     print("\n🔪 Chunking Text...")
     chunks = chunk_text(text)
@@ -26,37 +27,35 @@ if __name__ == "__main__":
 
     print("\n📐 Generating Embeddings...")
     model = get_embedding_model()
-    embeddings = embed_chunks(model, chunks)    
-
-    print(f"✅ Generated {len(embeddings)} embeddings.")
-    print("\n📊 Sample Embedding Vector (First Chunk) (Show only first 10 dimensions) :")
-    print(embeddings[0][:10])  # Show only first 10 dimensions
+    embeddings = embed_chunks(model, chunks)
 
     data_to_save = [
-        {
-            "chunk": chunk,
-            "embedding": embedding.tolist()  # Convert numpy array to list for JSON serialization
-        }
+        {"chunk": chunk, "embedding": embedding.tolist()}
         for chunk, embedding in zip(chunks, embeddings)
     ]
     output_path = "data/embeddings.json"
     with open(output_path, "w") as f:
-        json.dump(data_to_save, f, indent=4) # Write the data as JSON with indentation for pretty printing
+        json.dump(data_to_save, f, indent=4)
     print(f"✅ Embeddings saved to {output_path}")
-
     '''
-    print("\n🔎 Loading FAISS Retriever...")
+
+    # ✅ Step 5: Run full RAG chatbot: 
+    #  before starting-> on command prompt run(for permanent) :setx OPENAI_API_KEY "your_openai_api_key_" , run this in terminal to see key : echo $Env:OPENAI_API_KEY
+
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    if not openai_api_key:
+        raise ValueError("Please set the OPENAI_API_KEY environment variable.")
+
+    print("\n🔎 Initializing Retriever & Model...")
     model = get_embedding_model()
     retriever = FaissRetriever()
+    retriever.model = model  # Needed for embedding the query
 
-    user_question = "How to get skill development training under government schemes?"
-    query_embedding = model.encode(user_question)
-    
-    top_chunks = retriever.search(query_embedding, top_k=3)
+    rag = RAGChain(retriever, openai_api_key)
 
-    print("\n🧠 Top Relevant Chunks:")
+    question = "What is the eligibility criteria for Pradhan Mantri Kaushal Vikas Yojana?"
+    answer = rag.answer_question(question)
+
+    print("\n🤖 Chatbot Answer:")
     print("-" * 50)
-    for i, chunk in enumerate(top_chunks, 1):
-        print(f"\n[{i}] {chunk[:300]}...\n")
-
-        
+    print(answer)
