@@ -1,12 +1,29 @@
-
 # .gitignore
-venv/
+
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.so
 *.pyd
 *.dll
 *.lib
 *.exe
-*.so
-.DS_Store
+
+# Virtual Environments
+venv/
+ENV/
+env/
+
+# Logs
 *.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
