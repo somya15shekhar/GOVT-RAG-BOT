@@ -1,10 +1,13 @@
 from ocr.extract_text import extract_text  #ocr folder -> extract_text file -> extract_text function
 from chunking.chunk_text import chunk_text
 from embedding.embed_chunks import get_embedding_model, embed_chunks
+from retriever.faiss_retriever import FaissRetriever
 import json
 import numpy as np
 
-if __name__ == "__main__":
+if __name__ == "__main__":   
+    
+    r''' COMMENTED THIS BLOCK SINCE RAN IT ONCE AND SAVED THE EMBEDDINGS TO JSON
     pdf_path = r"C:\Users\Somya Shekhar\Desktop\chatbot-rag\data\compendium_of_govt._of_india_schemes_programmes.pdf"  # Example: Pradhan Mantri Kaushal Vikas Yojana
     text = extract_text(pdf_path)
     
@@ -40,3 +43,20 @@ if __name__ == "__main__":
     with open(output_path, "w") as f:
         json.dump(data_to_save, f, indent=4) # Write the data as JSON with indentation for pretty printing
     print(f"✅ Embeddings saved to {output_path}")
+
+    '''
+    print("\n🔎 Loading FAISS Retriever...")
+    model = get_embedding_model()
+    retriever = FaissRetriever()
+
+    user_question = "How to get skill development training under government schemes?"
+    query_embedding = model.encode(user_question)
+    
+    top_chunks = retriever.search(query_embedding, top_k=3)
+
+    print("\n🧠 Top Relevant Chunks:")
+    print("-" * 50)
+    for i, chunk in enumerate(top_chunks, 1):
+        print(f"\n[{i}] {chunk[:300]}...\n")
+
+        

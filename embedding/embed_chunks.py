@@ -8,3 +8,4 @@ def get_embedding_model():
 def embed_chunks(model, chunks):
     embeddings = model.encode(chunks, show_progress_bar= True)
     return embeddings 
+
