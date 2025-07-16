@@ -39,21 +39,22 @@ if __name__ == "__main__":
     print(f"✅ Embeddings saved to {output_path}")
     '''
 
-    # ✅ Step 5: Run full RAG chatbot: 
-    #  before starting-> on command prompt run(for permanent) :setx OPENAI_API_KEY "your_openai_api_key_" , run this in terminal to see key : echo $Env:OPENAI_API_KEY
+    # ✅ Step 1: Get Together API key
+    together_api_key = os.getenv("TOGETHER_API_KEY")
+    if not together_api_key:
+        raise ValueError("Please set TOGETHER_API_KEY as an environment variable.")
 
-    openai_api_key = os.getenv("OPENAI_API_KEY")
-    if not openai_api_key:
-        raise ValueError("Please set the OPENAI_API_KEY environment variable.")
-
-    print("\n🔎 Initializing Retriever & Model...")
+    # ✅ Step 2: Load retriever
+    print("🔎 Initializing model and retriever...")
     model = get_embedding_model()
     retriever = FaissRetriever()
-    retriever.model = model  # Needed for embedding the query
+    retriever.model = model
 
-    rag = RAGChain(retriever, openai_api_key)
+    # ✅ Step 3: Initialize RAG pipeline
+    rag = RAGChain(retriever, together_api_key)
 
-    question = "What is the eligibility criteria for Pradhan Mantri Kaushal Vikas Yojana?"
+    # ✅ Step 4: Ask your question
+    question = "What is Rashtriya Swasthya Bima Yojana? what is its eligibility criteria?"
     answer = rag.answer_question(question)
 
     print("\n🤖 Chatbot Answer:")

@@ -1,4 +1,9 @@
+numpy
 pdfplumber
 pdf2image
 pytesseract
 Pillow
+nltk
+sentence-transformers
+faiss-cpu 
+together

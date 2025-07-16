@@ -1,5 +1,5 @@
 import nltk
-nltk.download('punkt')
+nltk.download('punkt',quiet = True)
 
 from nltk.tokenize import sent_tokenize
 def chunk_text(text, chunk_size=500, overlap=50):
