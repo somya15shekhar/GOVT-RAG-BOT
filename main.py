@@ -57,7 +57,7 @@ if __name__ == "__main__":
     rag = RAGChain(retriever, together_api_key)
 
     # ✅ Step 4: Ask your question
-    question = "What are the key features of the Pradhan Mantri Awas Yojana?"
+    question = "How can poor woman get money from government scheme?"
     answer = rag.answer_question(question, top_k=2)
 
     print("\n🤖 Chatbot Answer:")

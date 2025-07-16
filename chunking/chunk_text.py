@@ -2,7 +2,7 @@ import nltk
 nltk.download('punkt',quiet = True)
 
 from nltk.tokenize import sent_tokenize
-def chunk_text(text, chunk_size=500, overlap=50):
+def chunk_text(text, chunk_size=800, overlap=150):
     """
     Splits text into chunks with specified size and overlap.
     

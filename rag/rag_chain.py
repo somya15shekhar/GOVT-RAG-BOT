@@ -9,15 +9,12 @@ class RAGChain:
 
     def generate_prompt(self, question, contexts):
         context_text = "\n\n---\n\n".join(contexts)
-        prompt = f"""You are an assistant for Indian government schemes. Use only the following context to answer the question. If the answer is not in the context, reply "I don't know."
+        prompt = f"""
+Context: {context_text}
+Question: {question}
 
-Context:
-{context_text}
-
-Question:
-{question}
-
-Answer:"""
+Answer the question using the context above. If you have partial information, provide what you can and mention what's missing. Only say "I don't know" if the context is completely irrelevant.
+"""
         return prompt
 
     def answer_question(self, question, top_k):

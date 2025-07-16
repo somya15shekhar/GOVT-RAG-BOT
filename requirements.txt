@@ -7,3 +7,4 @@ nltk
 sentence-transformers
 faiss-cpu 
 together
+gdown
