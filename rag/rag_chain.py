@@ -1,7 +1,7 @@
 from together import Together
 
 class RAGChain:
-    def __init__(self, retriever, api_key, model = "meta-llama/Llama-3.3-70B-Instruct-Turbo", max_tokens=300):
+    def __init__(self, retriever, api_key, model = "meta-llama/Llama-3-8b-chat-hf", max_tokens=300):
         self.client = Together(api_key=api_key)
         self.retriever = retriever
         self.model = model

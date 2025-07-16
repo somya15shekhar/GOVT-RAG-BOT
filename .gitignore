@@ -29,3 +29,5 @@ Thumbs.db
 .ipynb_checkpoints/
 
 data/embeddings.json
+
+.env
