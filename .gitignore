@@ -27,3 +27,5 @@ Thumbs.db
 
 # Jupyter Notebook Checkpoints
 .ipynb_checkpoints/
+
+data/embeddings.json
