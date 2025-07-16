@@ -34,7 +34,7 @@ def download_embeddings_if_missing():
     path = r"data/embeddings.json"
     if not os.path.exists(path):
         st.info("📥 Downloading embeddings.json from Hugging Face...")
-        url = "https://huggingface.co/datasets/somya15shekhar/govt-schemes-embeddings/blob/main/embeddings.json"
+        url = "https://huggingface.co/datasets/somya15shekhar/govt-schemes-embeddings/resolve/main/embeddings.json"
         response = requests.get(url)
         if response.status_code == 200:
             os.makedirs("data", exist_ok=True)
