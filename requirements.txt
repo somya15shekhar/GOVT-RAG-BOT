@@ -7,6 +7,6 @@ nltk
 sentence-transformers
 faiss-cpu 
 together
-gdown
+requests
 streamlit
 python-dotenv
