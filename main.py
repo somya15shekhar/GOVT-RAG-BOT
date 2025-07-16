@@ -47,45 +47,45 @@ def download_embeddings_if_missing():
 
 
     # ✅ Step 1: Download embeddings if missing
-    download_embeddings_if_missing()
+download_embeddings_if_missing()
     
     # ✅ Step 2: Get Together API key
-    from dotenv import load_dotenv
-    load_dotenv()
-    together_api_key = os.getenv("TOGETHER_API_KEY") or st.secrets.get("TOGETHER_API_KEY")
+from dotenv import load_dotenv
+load_dotenv()
+together_api_key = os.getenv("TOGETHER_API_KEY") or st.secrets.get("TOGETHER_API_KEY")
     
-    if not together_api_key:
-        st.error("Please set TOGETHER_API_KEY as an environment variable or in Streamlit secrets.")
-        st.stop()
+if not together_api_key:
+    st.error("Please set TOGETHER_API_KEY as an environment variable or in Streamlit secrets.")
+    st.stop()
     
     # ✅ Step 3: Initialize model and retriever
-    print("🔎 Initializing model and retriever...")
-    model = get_embedding_model()
-    retriever = FaissRetriever()
-    retriever.model = model
+print("🔎 Initializing model and retriever...")
+model = get_embedding_model()
+retriever = FaissRetriever()
+retriever.model = model
     
-    print(f"Debug - API key being used: {together_api_key[:15]}...")
-    print(f"Debug - API key length: {len(together_api_key)}")
-    print(f"Debug - API key type: {type(together_api_key)}")
+print(f"Debug - API key being used: {together_api_key[:15]}...")
+print(f"Debug - API key length: {len(together_api_key)}")
+print(f"Debug - API key type: {type(together_api_key)}")
 
-    try:
-        test_client = Together(api_key=together_api_key)
-        print("✅ Together client created successfully")
-    except Exception as e:
-        print(f"❌ Error creating Together client: {e}")
+try:
+    test_client = Together(api_key=together_api_key)
+    print("✅ Together client created successfully")
+except Exception as e:
+    print(f"❌ Error creating Together client: {e}")
 
     # ✅ Step 4: Initialize RAG pipeline
-    rag = RAGChain(retriever, together_api_key)
+rag = RAGChain(retriever, together_api_key)
     
     # ✅ Step 5: Streamlit UI
-    st.title("🤖 Sarkari Scheme Chatbot")
-    st.caption("Ask about Indian govt schemes in natural language (English/Hindi)")
+st.title("🤖 Sarkari Scheme Chatbot")
+st.caption("Ask about Indian govt schemes in natural language (English/Hindi)")
     
-    query = st.text_input("Ask your question:")
-    if query:
-        with st.spinner("Thinking..."):
-            answer = rag.answer_question(query, top_k=2)
-            print("\n🤖 Chatbot Answer:")
-            print("-" * 50)
-            print(answer)
-            st.success(answer)
+query = st.text_input("Ask your question:")
+if query:
+    with st.spinner("Thinking..."):
+        answer = rag.answer_question(query, top_k=2)
+        print("\n🤖 Chatbot Answer:")
+        print("-" * 50)
+        print(answer)
+        st.success(answer)
