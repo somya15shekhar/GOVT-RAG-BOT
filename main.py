@@ -45,7 +45,7 @@ def download_embeddings_if_missing():
             st.error("❌ Failed to download embeddings. Check the Hugging Face URL or permissions.")
             st.stop()
 
-if __name__ == "__main__":
+
     # ✅ Step 1: Download embeddings if missing
     download_embeddings_if_missing()
     
