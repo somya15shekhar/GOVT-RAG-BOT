@@ -60,7 +60,9 @@ if not together_api_key:
 st.info("🔎 Initializing model and retriever...")
 model = get_embedding_model()
 retriever = FaissRetriever()
+retriever.load_embeddings("data/embeddings.json")  # 🔥 Load only after download
 retriever.model = model
+
 
 try:
     test_client = Together(api_key=together_api_key)
