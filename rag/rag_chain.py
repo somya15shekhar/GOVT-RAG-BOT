@@ -8,8 +8,7 @@ class RAGChain:
         self.max_tokens = max_tokens
 
     def generate_prompt(self, question, contexts):
-        short_chunks = [c[:400] for c in contexts]
-        context_text = "\n\n---\n\n".join(short_chunks)
+        context_text = "\n\n---\n\n".join(contexts)
         prompt = f"""You are an assistant for Indian government schemes. Use only the following context to answer the question. If the answer is not in the context, reply "I don't know."
 
 Context:
@@ -21,10 +20,17 @@ Question:
 Answer:"""
         return prompt
 
-    def answer_question(self, question, top_k=2):
+    def answer_question(self, question, top_k):
         query_embedding = self.retriever.model.encode(question)
         contexts = self.retriever.search(query_embedding, top_k)
         prompt = self.generate_prompt(question, contexts)
+
+          # Add this logging:
+        print("\n🔍 Retrieved Chunks:")
+        for i, chunk in enumerate(contexts, 1):
+            print(f"--- Chunk {i} ---")
+            print(chunk[:500])  # print first 500 chars to avoid flooding
+            print()
 
         response = self.client.chat.completions.create(
             model=self.model,

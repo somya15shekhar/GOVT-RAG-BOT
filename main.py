@@ -39,6 +39,9 @@ if __name__ == "__main__":
     print(f"✅ Embeddings saved to {output_path}")
     '''
 
+# ON TERMINAL/POWERSHELL: $env:TOGETHER_API_KEY = "your-api-key-here"
+# python main.py
+
     # ✅ Step 1: Get Together API key
     together_api_key = os.getenv("TOGETHER_API_KEY")
     if not together_api_key:
@@ -54,8 +57,8 @@ if __name__ == "__main__":
     rag = RAGChain(retriever, together_api_key)
 
     # ✅ Step 4: Ask your question
-    question = "What is Rashtriya Swasthya Bima Yojana? what is its eligibility criteria?"
-    answer = rag.answer_question(question)
+    question = "What are the key features of the Pradhan Mantri Awas Yojana?"
+    answer = rag.answer_question(question, top_k=2)
 
     print("\n🤖 Chatbot Answer:")
     print("-" * 50)
