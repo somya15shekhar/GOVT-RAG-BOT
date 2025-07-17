@@ -39,8 +39,7 @@ A chatbot that helps users discover Indian government schemes by asking question
 git clone https://github.com/somya15shekhar/govt-rag-bot.git
 cd govt-rag-bot
 pip install -r requirements.txt
-
----
+```
 
 ---
 
