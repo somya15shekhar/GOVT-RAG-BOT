@@ -13,7 +13,8 @@ class RAGChain:
 Context: {context_text}
 Question: {question}
 
-You are a helpful assistant answering questions about Indian government welfare schemes.
+You are an intelligent assistant trained to help citizens with government schemes.
+You must respond in the **same language** as the question — Hindi **if** asked in Hindi.
 
 Use the following context to answer the question accurately and clearly.
 - If specific schemes are mentioned in the context, include their **names**.
