@@ -6,6 +6,7 @@ import os
 import requests
 from together import Together
 from dotenv import load_dotenv
+from pathlib import Path  # ✅ Cross-platform path handling
 
 # --- Optional: Preserved commented code for reference ---
 comments = r'''
@@ -32,13 +33,13 @@ with open(output_path, "w") as f:
 
 # --- Step 1: Download Embeddings from Hugging Face if missing ---
 def download_embeddings_if_missing():
-    path = "data/embeddings.json"
-    if not os.path.exists(path):
+    path = Path("data/embeddings.json")
+    if not path.exists():
         st.info("📥 Downloading embeddings.json from Hugging Face...")
         url = "https://huggingface.co/datasets/somya15shekhar/govt-schemes-embeddings/resolve/main/embeddings.json"
         response = requests.get(url)
         if response.status_code == 200:
-            os.makedirs("data", exist_ok=True)
+            path.parent.mkdir(parents=True, exist_ok=True)
             with open(path, "wb") as f:
                 f.write(response.content)
             st.success("✅ Embeddings downloaded successfully.")
@@ -58,12 +59,16 @@ if not together_api_key:
 
 # --- Step 3: Initialize model and retriever ---
 st.info("🔎 Initializing model and retriever...")
-model = get_embedding_model()
-retriever = FaissRetriever()
-retriever.load_embeddings("data/embeddings.json")  # 🔥 Load only after download
-retriever.model = model
+try:
+    model = get_embedding_model()
+    retriever = FaissRetriever()
+    retriever.load_embeddings("data/embeddings.json")
+    retriever.model = model
+except Exception as e:
+    st.error(f"❌ Error loading model or embeddings: {e}")
+    st.stop()
 
-
+# --- Step 4: Test Together client ---
 try:
     test_client = Together(api_key=together_api_key)
     st.success("✅ Together client created successfully")
@@ -71,15 +76,18 @@ except Exception as e:
     st.error(f"❌ Error creating Together client: {e}")
     st.stop()
 
-# --- Step 4: Initialize RAG pipeline ---
+# --- Step 5: Initialize RAG pipeline ---
 rag = RAGChain(retriever, together_api_key)
 
-# --- Step 5: Streamlit UI ---
+# --- Step 6: Streamlit UI ---
 st.title("🤖 Sarkari Scheme Chatbot")
 st.caption("Ask about Indian government schemes in English or Hindi")
 
 query = st.text_input("Ask your question:")
 if query:
     with st.spinner("Thinking..."):
-        answer = rag.answer_question(query, top_k=2)
-        st.success(answer)
+        try:
+            answer = rag.answer_question(query, top_k=2)
+            st.success(answer)
+        except Exception as e:
+            st.error(f"❌ Failed to generate answer: {e}")
