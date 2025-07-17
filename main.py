@@ -10,7 +10,7 @@ from pathlib import Path  # ✅ Cross-platform path handling
 import platform
 
 from translate.translator import translate_hi_to_en, translate_en_to_hi
-import langdetect  # Optional: to auto-detect Hindi input
+from langdetect import detect  # Optional: to auto-detect Hindi input
 
 
 # --- Optional: Preserved commented code for reference ---
