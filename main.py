@@ -7,6 +7,7 @@ import requests
 from together import Together
 from dotenv import load_dotenv
 from pathlib import Path  # ✅ Cross-platform path handling
+import platform
 
 # --- Optional: Preserved commented code for reference ---
 comments = r'''
@@ -31,7 +32,6 @@ with open(output_path, "w") as f:
     json.dump(data_to_save, f, indent=4)     
 '''
 
-import platform
 if "android" in platform.platform().lower():
     st.warning("⚠️ Best viewed on desktop for full performance.")
 
@@ -42,14 +42,18 @@ def download_embeddings_if_missing():
     if not path.exists():
         st.info("📥 Downloading embeddings.json from Hugging Face...")
         url = "https://huggingface.co/datasets/somya15shekhar/govt-schemes-embeddings/resolve/main/embeddings.json"
-        response = requests.get(url)
-        if response.status_code == 200:
-            path.parent.mkdir(parents=True, exist_ok=True)
-            with open(path, "wb") as f:
-                f.write(response.content)
-            st.success("✅ Embeddings downloaded successfully.")
-        else:
-            st.error("❌ Failed to download embeddings. Check the Hugging Face URL or permissions.")
+        try:
+            response = requests.get(url, timeout=10)
+            if response.status_code == 200:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                with open(path, "wb") as f:
+                    f.write(response.content)
+                st.success("✅ Embeddings downloaded successfully.")
+            else:
+                st.error("❌ Failed to download embeddings. Check the Hugging Face URL or permissions.")
+                st.stop()
+        except Exception as e:
+            st.error(f"❌ Download failed: {e}")
             st.stop()
 
 download_embeddings_if_missing()
@@ -62,15 +66,23 @@ if not together_api_key:
     st.error("Please set TOGETHER_API_KEY as an environment variable or in Streamlit secrets.")
     st.stop()
 
-# --- Step 3: Initialize model and retriever ---
-st.info("🔎 Initializing model and retriever...")
-try:
-    model = get_embedding_model()
+# --- Step 3: Cached Model & Retriever ---
+@st.cache_resource(show_spinner="🔄 Loading model...")
+def load_model():
+    return get_embedding_model()
+
+@st.cache_resource(show_spinner="🔄 Loading retriever...")
+def load_retriever(model):
     retriever = FaissRetriever()
     retriever.load_embeddings("data/embeddings.json")
     retriever.model = model
+    return retriever
+
+try:
+    model = load_model()
+    retriever = load_retriever(model)
 except Exception as e:
-    st.error(f"❌ Error loading model or embeddings: {e}")
+    st.error(f"❌ Error loading model or retriever: {e}")
     st.stop()
 
 # --- Step 4: Test Together client ---
@@ -81,10 +93,7 @@ except Exception as e:
     st.error(f"❌ Error creating Together client: {e}")
     st.stop()
 
-# --- Step 5: Initialize RAG pipeline ---
-rag = RAGChain(retriever, together_api_key)
-
-# --- Step 6: Streamlit UI ---
+# --- Step 5: Streamlit UI ---
 st.title("🤖 Sarkari Scheme Chatbot")
 st.caption("Ask about Indian government schemes in English or Hindi")
 
@@ -92,6 +101,7 @@ query = st.text_input("Ask your question:")
 if query:
     with st.spinner("Thinking..."):
         try:
+            rag = RAGChain(retriever, together_api_key)
             answer = rag.answer_question(query, top_k=2)
             st.success(answer)
         except Exception as e:
