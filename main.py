@@ -102,7 +102,7 @@ if query:
     with st.spinner("Thinking..."):
         try:
             rag = RAGChain(retriever, together_api_key)
-            answer = rag.answer_question(query, top_k=2)
+            answer = rag.answer_question(query, top_k=4)
             st.success(answer)
         except Exception as e:
             st.error(f"❌ Failed to generate answer: {e}")

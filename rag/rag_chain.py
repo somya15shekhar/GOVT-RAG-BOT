@@ -13,7 +13,12 @@ class RAGChain:
 Context: {context_text}
 Question: {question}
 
-Answer the question using the context above. If you have partial information, provide what you can and mention what's missing. Only say "I don't know" if the context is completely irrelevant.
+You are a helpful assistant answering questions about Indian government welfare schemes.
+
+Use the following context to answer the question accurately and clearly.
+- If specific schemes are mentioned in the context, include their **names**.
+- If possible, mention eligibility, benefits, and links.
+- If no relevant context is found, reply that more information is needed.
 """
         return prompt
 
