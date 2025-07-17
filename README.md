@@ -1,3 +1,4 @@
+````markdown
 # 🤖 Sarkari Scheme Chatbot
 
 A chatbot that helps users discover Indian government schemes by asking questions in **English or Hindi**. Powered by a Retrieval-Augmented Generation (RAG) pipeline using 700+ real government PDFs.
@@ -39,3 +40,54 @@ A chatbot that helps users discover Indian government schemes by asking question
 git clone https://github.com/somya15shekhar/govt-rag-bot.git
 cd govt-rag-bot
 pip install -r requirements.txt
+````
+
+Create a `.env` file:
+
+```
+TOGETHER_API_KEY=your_key_here
+```
+
+Run the app:
+
+```bash
+streamlit run main.py
+```
+
+---
+
+🚀 Future Work
+Improve Hindi Answer Quality: Add a multilingual Together.ai model or post-process answers using translation libraries for better Hindi responses.
+
+Scheme Name Extraction: Implement Named Entity Recognition (NER) or keyword highlighting to ensure the bot names specific schemes in its responses.
+
+Search Filtering: Add filters to let users search by state, category (education, finance, women), or target group (farmers, students, senior citizens).
+
+Better UI: Introduce collapsible answers, feedback thumbs-up/down, or even voice-to-text queries.
+
+📥 Easy Data Updates – Two options to keep your scheme data fresh:
+
+Local Update
+➤ Drop new PDFs into the text_data/ folder
+➤ Run process_all_pdfs.py to regenerate embeddings.json
+➤ Replace the old JSON file in data/
+
+Cloud Update (Hugging Face Repo)
+➤ Upload your updated embeddings.json to your Hugging Face dataset repo
+➤ On app restart, Streamlit auto-downloads the latest JSON file and loads it — no manual update needed!
+
+---
+
+## 🗣️ Feedback
+
+* Have suggestions? Raise an issue or connect via [LinkedIn](www.linkedin.com/in/somya-shekhar-93299a27a)
+* Want to expand to state-specific schemes or more Indian languages? Fork it!
+
+---
+
+## 👤 Author
+
+Made with ❤️ by **Somya Shekhar**
+🔗 📩 [somya15shekhar@gmail.com](mailto:somyashekhar61@gmail.com)
+
+
