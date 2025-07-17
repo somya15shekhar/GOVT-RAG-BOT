@@ -31,6 +31,11 @@ with open(output_path, "w") as f:
     json.dump(data_to_save, f, indent=4)     
 '''
 
+import platform
+if "android" in platform.platform().lower():
+    st.warning("⚠️ Best viewed on desktop for full performance.")
+
+
 # --- Step 1: Download Embeddings from Hugging Face if missing ---
 def download_embeddings_if_missing():
     path = Path("data/embeddings.json")
