@@ -40,6 +40,7 @@ git clone https://github.com/somya15shekhar/govt-rag-bot.git
 cd govt-rag-bot
 pip install -r requirements.txt
 
+---
 
 ---
 
@@ -57,4 +58,5 @@ To keep the chatbot’s knowledge up-to-date with new government schemes, follow
    Upload the new `embeddings.json` file to remote storage — such as the [Hugging Face dataset repository](https://huggingface.co/datasets/somya15shekhar/govt-schemes-embeddings/tree/main).
 
 4. **Deploy or Restart App**  
-   Your deployed chatbot app will automatically download the latest `embeddings.json` at startup and use it without requiring any code changes.
+   Deployed chatbot app will automatically download the latest `embeddings.json` at startup and use it without requiring any code changes.
+
