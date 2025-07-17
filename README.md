@@ -40,7 +40,10 @@ git clone https://github.com/somya15shekhar/govt-rag-bot.git
 cd govt-rag-bot
 pip install -r requirements.txt
 
+---
+
 ## 🔁 Updating Data (Adding More PDFs)
+
 To keep my chatbot’s knowledge up-to-date with new government schemes, follow this pipeline:
 
 Add New PDFs Locally
