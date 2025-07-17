@@ -10,3 +10,5 @@ together
 requests
 streamlit
 python-dotenv
+transformers
+langdetect
