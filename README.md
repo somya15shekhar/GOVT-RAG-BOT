@@ -40,20 +40,21 @@ git clone https://github.com/somya15shekhar/govt-rag-bot.git
 cd govt-rag-bot
 pip install -r requirements.txt
 
+
 ---
 
 ## 🔁 Updating Data (Adding More PDFs)
 
-To keep my chatbot’s knowledge up-to-date with new government schemes, follow this pipeline:
+To keep the chatbot’s knowledge up-to-date with new government schemes, follow this pipeline:
 
-Add New PDFs Locally
-Place any new scheme PDFs inside the text_data/ folder on local machine.
+1. **Add New PDFs Locally**  
+   Place any new scheme PDFs inside the `text_data/` folder on your local machine.
 
-Regenerate Embeddings
-Run the process_all_pdfs.py script locally to extract text, chunk it, and generate an updated embeddings.json file that includes all PDFs.
+2. **Regenerate Embeddings**  
+   Run the `process_all_pdfs.py` script locally to extract text, chunk it, and generate an updated `embeddings.json` file that includes all PDFs.
 
-Upload Updated Embeddings
-Upload the new embeddings.json file to remote storage— [HUGGING FACE REPO](https://huggingface.co/datasets/somya15shekhar/govt-schemes-embeddings/tree/main)
+3. **Upload Updated Embeddings**  
+   Upload the new `embeddings.json` file to remote storage — such as the [Hugging Face dataset repository](https://huggingface.co/datasets/somya15shekhar/govt-schemes-embeddings/tree/main).
 
-Deploy or Restart Your App
-Deployed chatbot app will automatically download the latest embeddings.json at startup and use it without requiring any code changes.
+4. **Deploy or Restart App**  
+   Your deployed chatbot app will automatically download the latest `embeddings.json` at startup and use it without requiring any code changes.
