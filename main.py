@@ -9,6 +9,10 @@ from dotenv import load_dotenv
 from pathlib import Path  # ✅ Cross-platform path handling
 import platform
 
+from translate.translator import translate_hi_to_en, translate_en_to_hi
+import langdetect  # Optional: to auto-detect Hindi input
+
+
 # --- Optional: Preserved commented code for reference ---
 comments = r'''
 from ocr.extract_text import extract_text 
@@ -101,8 +105,23 @@ query = st.text_input("Ask your question:")
 if query:
     with st.spinner("Thinking..."):
         try:
+            # Detect language (basic check)
+            is_hindi = False
+            try:
+                is_hindi = detect(query) == 'hi'
+            except:
+                pass  # In case language detection fails
+
+            if is_hindi:
+                query_translated = translate_hi_to_en(query)
+            else:
+                query_translated = query
+
             rag = RAGChain(retriever, together_api_key)
-            answer = rag.answer_question(query, top_k=4)
-            st.success(answer)
+            answer_en = rag.answer_question(query_translated, top_k=4)
+
+            final_answer = translate_en_to_hi(answer_en) if is_hindi else answer_en
+            st.success(final_answer)
+
         except Exception as e:
             st.error(f"❌ Failed to generate answer: {e}")
