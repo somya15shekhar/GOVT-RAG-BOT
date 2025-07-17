@@ -5,6 +5,7 @@ pytesseract
 Pillow
 nltk
 sentence-transformers
+sentencepiece
 faiss-cpu 
 together
 requests
