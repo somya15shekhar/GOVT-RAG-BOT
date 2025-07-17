@@ -41,10 +41,16 @@ cd govt-rag-bot
 pip install -r requirements.txt
 
 ## 🔁 Updating Data (Adding More PDFs)
-You have two options:
+To keep my chatbot’s knowledge up-to-date with new government schemes, follow this pipeline:
 
-Local:
-Add new PDFs to text_data/ and run process_all_pdfs.py to regenerate embeddings.json.
+Add New PDFs Locally
+Place any new scheme PDFs inside the text_data/ folder on local machine.
 
-Remote:
-Upload processed embeddings.json to Hugging Face. When Streamlit restarts, it re-downloads this file automatically — no code change needed.
+Regenerate Embeddings
+Run the process_all_pdfs.py script locally to extract text, chunk it, and generate an updated embeddings.json file that includes all PDFs.
+
+Upload Updated Embeddings
+Upload the new embeddings.json file to remote storage— [HUGGING FACE REPO](https://huggingface.co/datasets/somya15shekhar/govt-schemes-embeddings/tree/main)
+
+Deploy or Restart Your App
+Deployed chatbot app will automatically download the latest embeddings.json at startup and use it without requiring any code changes.
