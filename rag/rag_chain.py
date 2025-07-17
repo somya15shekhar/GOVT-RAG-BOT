@@ -1,7 +1,7 @@
 from together import Together
 
 class RAGChain:
-    def __init__(self, retriever, api_key, model = "meta-llama/Llama-3-8b-chat-hf", max_tokens=300):
+    def __init__(self, retriever, api_key, model = "meta-llama/Llama-3.3-70B-Instruct-Turbo", max_tokens=300):
         self.client = Together(api_key=api_key)
         self.retriever = retriever
         self.model = model
@@ -14,7 +14,7 @@ Context: {context_text}
 Question: {question}
 
 You are an intelligent assistant trained to help citizens with government schemes.
-You must respond in the **same language** as the question — Hindi **if** asked in Hindi.
+You must respond in the **same language** as the question — Hindi if asked in Hindi.
 
 Use the following context to answer the question accurately and clearly.
 - If specific schemes are mentioned in the context, include their **names**.
