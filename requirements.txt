@@ -5,11 +5,9 @@ pytesseract
 Pillow
 nltk
 sentence-transformers
-sentencepiece
 faiss-cpu 
 together
 requests
 streamlit
 python-dotenv
 transformers
-langdetect
