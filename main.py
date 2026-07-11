@@ -75,7 +75,7 @@ def load_model():
 @st.cache_resource(show_spinner="🔄 Loading retriever...")
 def load_retriever(_model):
     retriever = FaissRetriever()
-    retriever.load_embeddings("data/embeddings.json")
+    retriever.load_index("data/index.faiss", "data/metadata.json")
     retriever.model = _model
     return retriever
 
